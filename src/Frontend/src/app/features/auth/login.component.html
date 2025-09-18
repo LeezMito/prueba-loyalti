@@ -1,0 +1,65 @@
+<section class="auth auth--center">
+  <div class="auth__card card">
+    <div class="auth__brand">
+      <div class="logo">🛒</div>
+      <h1 class="title">Iniciar sesión</h1>
+      <p class="subtitle text-muted">Bienvenido a la tiendita</p>
+    </div>
+
+    <form (ngSubmit)="submit()" #f="ngForm" class="auth__form" novalidate>
+      <!-- Email -->
+      <div class="field">
+        <label class="label" for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          #emailCtrl="ngModel"
+          required
+          email
+          class="input"
+          placeholder="tucorreo@dominio.com"
+          autocomplete="email"
+        />
+        <div class="error" *ngIf="emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)">
+          <p *ngIf="emailCtrl.errors?.['required']">El correo es obligatorio.</p>
+          <p *ngIf="emailCtrl.errors?.['email']">Ingresa un correo válido.</p>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="field">
+        <label class="label" for="password">Contraseña</label>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          #passwordCtrl="ngModel"
+          required
+          minlength="6"
+          class="input"
+          placeholder="Contraseña"
+          autocomplete="current-password"
+        />
+        <div class="error" *ngIf="passwordCtrl.invalid && (passwordCtrl.dirty || passwordCtrl.touched)">
+          <p *ngIf="passwordCtrl.errors?.['required']">La contraseña es obligatoria.</p>
+          <p *ngIf="passwordCtrl.errors?.['minlength']">Debe tener al menos 6 caracteres.</p>
+        </div>
+      </div>
+
+      <p *ngIf="error" class="alert alert--error mb-3">{{ error }}</p>
+
+      <button class="btn btn--accent btn--lg w-full" [disabled]="loading" type="submit">
+        <span class="btn__spinner" *ngIf="loading"></span>
+        Entrar
+      </button>
+
+      <div class="auth__alt">
+        <span class="text-muted">¿No tienes cuenta?</span>
+        <a routerLink="/register" class="link">Crear cuenta</a>
+      </div>
+    </form>
+  </div>
+</section>

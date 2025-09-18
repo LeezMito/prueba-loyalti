@@ -1,0 +1,110 @@
+@use '../../../styles/variables' as *
+@use '../../../styles/mixins' as *
+
+.checkout
+  padding-block: $space-6
+
+.checkout__title
+  margin: 0 0 $space-4 0
+
+.checkout__grid
+  display: grid
+  grid-template-columns: 1.3fr .9fr
+  gap: $space-4
+  align-items: start
+
+@media (max-width: 960px)
+  .checkout__grid
+    grid-template-columns: 1fr
+
+.checkout__form
+  padding: $space-4
+  display: grid
+  gap: $space-3
+
+.form
+  display: grid
+  gap: $space-3
+
+.field
+  display: grid
+  gap: $space-1
+
+.field--inline
+  display: flex
+  gap: $space-4
+  align-items: center
+
+textarea.input
+  resize: vertical
+
+.checkout__summary
+  padding: $space-4
+
+.summary-row
+  display: flex
+  justify-content: space-between
+  margin-bottom: $space-2
+  color: $clr-ink
+
+.summary-row--total
+  padding-top: $space-2
+  border-top: 1px solid $clr-border
+  font-weight: 800
+  font-size: 1.05rem
+
+.summary-items
+  display: grid
+  gap: $space-2
+  margin-block: $space-2
+
+.summary-item
+  display: flex
+  align-items: center
+  justify-content: space-between
+  gap: $space-3
+  padding: $space-2 0
+  border-bottom: 1px dashed rgba($clr-ink, .08)
+
+  &:last-child
+    border-bottom: none
+
+.summary-item__info
+  display: flex
+  align-items: center
+  gap: $space-3
+
+.summary-item__info img
+  width: 56px
+  height: 56px
+  object-fit: cover
+  border-radius: $radius-sm
+  border: 1px solid $clr-border
+  background: $clr-bg
+
+.summary-item__title
+  font-weight: 600
+  margin-bottom: 2px
+
+.summary-sep
+  height: 1px
+  background: $clr-border
+  margin: $space-2 0
+
+.btn
+  position: relative
+.btn__spinner
+  width: 16px
+  height: 16px
+  border-radius: 50%
+  border: 2px solid rgba($clr-ink, .2)
+  border-top-color: #fff
+  display: inline-block
+  margin-right: $space-2
+  animation: spin .65s linear infinite
+
+@keyframes spin
+  from
+    transform: rotate(0deg)
+  to
+    transform: rotate(360deg)

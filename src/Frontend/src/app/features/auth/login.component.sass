@@ -1,0 +1,98 @@
+@use '../../../styles/variables' as *
+@use '../../../styles/mixins' as *
+
+.auth
+  min-height: calc(100dvh - 60px)
+  display: grid
+  place-items: center
+  padding: $space-8 $space-4
+
+.auth--center
+  background: linear-gradient(180deg, rgba($clr-primary-100, .35), rgba($clr-bg, 1) 40%)
+
+.auth__card
+  width: 100%
+  max-width: 420px
+  padding: $space-6
+  box-shadow: $shadow-md
+  border-radius: $radius-lg
+
+.auth__brand
+  text-align: center
+  margin-bottom: $space-6
+
+.logo
+  width: 56px
+  height: 56px
+  display: grid
+  place-items: center
+  border-radius: 14px
+  margin: 0 auto $space-3
+  background: $clr-primary-200
+  box-shadow: $shadow-sm
+
+.title
+  margin: 0
+  font-size: 1.5rem
+  line-height: 1.2
+
+.subtitle
+  margin: $space-1 0 0 0
+  font-size: .95rem
+
+.auth__form
+  display: grid
+  gap: $space-3
+
+.field
+  display: grid
+  gap: $space-1
+
+.link
+  color: $clr-accent
+  font-weight: 600
+  &:hover
+    text-decoration: underline
+
+.auth__alt
+  margin-top: $space-3
+  display: flex
+  gap: $space-2
+  justify-content: center
+  align-items: center
+
+.btn
+  position: relative
+
+.btn__spinner
+  width: 16px
+  height: 16px
+  border-radius: 50%
+  border: 2px solid rgba($clr-ink, .2)
+  border-top-color: #fff
+  display: inline-block
+  margin-right: $space-2
+  animation: spin .65s linear infinite
+
+.btn--accent .btn__spinner
+  border-color: rgba(#fff, .35)
+  border-top-color: #fff
+
+.error
+  font-size: 0.85rem
+  color: #BF7373
+  margin-top: 0.25rem
+  p
+    margin: 0
+
+@keyframes spin
+  from
+    transform: rotate(0deg)
+  to
+    transform: rotate(360deg)
+
+@media (max-width: 480px)
+  .auth__card
+    padding: $space-4
+  .title
+    font-size: 1.35rem

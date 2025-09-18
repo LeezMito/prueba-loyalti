@@ -1,0 +1,75 @@
+<section class="auth auth--center">
+  <div class="auth__card card">
+    <div class="auth__brand">
+      <div class="logo">📝</div>
+      <h1 class="title">Crear cuenta</h1>
+      <p class="subtitle text-muted">Regístrate para comprar en la tiendita</p>
+    </div>
+    <form (ngSubmit)="submit(f)" #f="ngForm" class="auth__form" novalidate>
+      <div class="field">
+        <label class="label" for="nombre">Nombre</label>
+        <input id="nombre" name="nombre" [(ngModel)]="nombre" class="input"
+              required #nombreCtrl="ngModel"
+              [class.input--invalid]="nombreCtrl.invalid && (nombreCtrl.touched || f.submitted)" />
+        <small *ngIf="nombreCtrl.errors?.['required'] && (nombreCtrl.touched || f.submitted)" class="error">
+          El nombre es obligatorio
+        </small>
+      </div>
+
+      <div class="field">
+        <label class="label" for="apellidos">Apellidos</label>
+        <input id="apellidos" name="apellidos" [(ngModel)]="apellidos" class="input"
+              required #apellidosCtrl="ngModel"
+              [class.input--invalid]="apellidosCtrl.invalid && (apellidosCtrl.touched || f.submitted)" />
+        <small *ngIf="apellidosCtrl.errors?.['required'] && (apellidosCtrl.touched || f.submitted)" class="error">
+          Los apellidos son obligatorios
+        </small>
+      </div>
+
+      <div class="field">
+        <label class="label" for="direccion">Dirección</label>
+        <input id="direccion" name="direccion" [(ngModel)]="direccion" class="input" />
+      </div>
+
+      <div class="field">
+        <label class="label" for="email">Email</label>
+        <input id="email" type="email" name="email" [(ngModel)]="email" class="input"
+              required email autocomplete="email" #emailCtrl="ngModel"
+              [class.input--invalid]="emailCtrl.invalid && (emailCtrl.touched || f.submitted)" />
+        <small *ngIf="emailCtrl.errors?.['required'] && (emailCtrl.touched || f.submitted)" class="error">
+          El email es obligatorio
+        </small>
+        <small *ngIf="emailCtrl.errors?.['email'] && (emailCtrl.touched || f.submitted)" class="error">
+          Ingresa un email válido
+        </small>
+      </div>
+
+      <div class="field">
+        <label class="label" for="password">Contraseña</label>
+        <input id="password" type="password" name="password" [(ngModel)]="password" class="input"
+              required minlength="6" autocomplete="new-password" #passwordCtrl="ngModel"
+              [class.input--invalid]="passwordCtrl.invalid && (passwordCtrl.touched || f.submitted)" />
+        <small *ngIf="passwordCtrl.errors?.['required'] && (passwordCtrl.touched || f.submitted)" class="error">
+          La contraseña es obligatoria
+        </small>
+        <small *ngIf="passwordCtrl.errors?.['minlength'] && (passwordCtrl.touched || f.submitted)" class="error">
+          La contraseña debe tener al menos 6 caracteres
+        </small>
+      </div>
+
+      <p *ngIf="error" class="alert alert--error mb-3">{{ error }}</p>
+      <p *ngIf="success" class="alert alert--success mb-3">{{ success }}</p>
+
+      <button class="btn btn--primary btn--lg w-full" [disabled]="loading" type="submit">
+        <span class="btn__spinner" *ngIf="loading"></span>
+        Registrarme
+      </button>
+
+      <div class="auth__alt">
+        <span class="text-muted">¿Ya tienes cuenta?</span>
+        <a routerLink="/login" class="link">Iniciar sesión</a>
+      </div>
+    </form>
+
+  </div>
+</section>

@@ -1,0 +1,11 @@
+/home/guillermo/Documentos/inventory/src/Inventory.Entities/bin/Debug/net8.0/Inventory.Entities.deps.json
+/home/guillermo/Documentos/inventory/src/Inventory.Entities/bin/Debug/net8.0/Inventory.Entities.dll
+/home/guillermo/Documentos/inventory/src/Inventory.Entities/bin/Debug/net8.0/Inventory.Entities.pdb
+/home/guillermo/Documentos/inventory/src/Inventory.Entities/obj/Debug/net8.0/Inventory.Entities.GeneratedMSBuildEditorConfig.editorconfig
+/home/guillermo/Documentos/inventory/src/Inventory.Entities/obj/Debug/net8.0/Inventory.Entities.AssemblyInfoInputs.cache
+/home/guillermo/Documentos/inventory/src/Inventory.Entities/obj/Debug/net8.0/Inventory.Entities.AssemblyInfo.cs
+/home/guillermo/Documentos/inventory/src/Inventory.Entities/obj/Debug/net8.0/Inventory.Entities.csproj.CoreCompileInputs.cache
+/home/guillermo/Documentos/inventory/src/Inventory.Entities/obj/Debug/net8.0/Inventory.Entities.dll
+/home/guillermo/Documentos/inventory/src/Inventory.Entities/obj/Debug/net8.0/refint/Inventory.Entities.dll
+/home/guillermo/Documentos/inventory/src/Inventory.Entities/obj/Debug/net8.0/Inventory.Entities.pdb
+/home/guillermo/Documentos/inventory/src/Inventory.Entities/obj/Debug/net8.0/ref/Inventory.Entities.dll

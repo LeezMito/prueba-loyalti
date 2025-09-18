@@ -1,0 +1,122 @@
+@use '../../../styles/variables' as *
+@use '../../../styles/mixins' as *
+
+.cart
+  padding-block: $space-6
+
+.cart-empty
+  display: grid
+  place-items: center
+  min-height: 50vh
+
+.cart-empty__card
+  text-align: center
+  padding: $space-8
+  border-radius: $radius-lg
+  box-shadow: $shadow-md
+  max-width: 560px
+
+.cart-empty__icon
+  width: 72px
+  height: 72px
+  margin: 0 auto $space-3
+  display: grid
+  place-items: center
+  border-radius: 18px
+  background: $clr-primary-200
+  box-shadow: $shadow-sm
+  font-size: 1.6rem
+
+.cart-empty__title
+  margin: 0 0 $space-1 0
+
+.cart-grid
+  display: grid
+  grid-template-columns: 1.7fr .9fr
+  gap: $space-4
+  align-items: start
+
+@media (max-width: 960px)
+  .cart-grid
+    grid-template-columns: 1fr
+
+.cart-list
+  padding: 0
+  overflow: hidden
+
+.cart-list__head
+  display: grid
+  grid-template-columns: 1fr .2fr .35fr .3fr .2fr
+  gap: $space-3
+  padding: $space-3 $space-4
+  border-bottom: 1px solid $clr-border
+  color: $clr-muted
+  font-weight: 600
+
+.cart-item
+  display: grid
+  grid-template-columns: 1fr .2fr .35fr .3fr .2fr
+  gap: $space-3
+  padding: $space-3 $space-4
+  align-items: center
+  border-bottom: 1px solid rgba($clr-ink, .05)
+
+  &:last-child
+    border-bottom: none
+
+.cart-item__product
+  display: flex
+  gap: $space-3
+  align-items: center
+
+.cart-item__img
+  width: 72px
+  height: 72px
+  object-fit: cover
+  border-radius: $radius-sm
+  background: $clr-bg
+  border: 1px solid $clr-border
+
+.cart-item__meta
+  display: grid
+  gap: $space-1
+
+.cart-item__title
+  margin: 0
+  font-size: 1rem
+  font-weight: 600
+
+.cart-item__price, .cart-item__subtotal
+  font-weight: 600
+
+.cart-item__qty
+  display: inline-flex
+  align-items: center
+  gap: $space-2
+
+.cart-item__input
+  width: 70px
+  text-align: center
+
+.cart-item__remove
+  text-align: right
+
+.cart-summary
+  padding: $space-4
+  position: sticky
+  top: $space-4
+
+.cart-summary__title
+  margin: 0 0 $space-3 0
+
+.cart-summary__row
+  display: flex
+  justify-content: space-between
+  margin-bottom: $space-2
+  color: $clr-ink
+
+.cart-summary__row--total
+  padding-top: $space-2
+  border-top: 1px solid $clr-border
+  font-weight: 800
+  font-size: 1.05rem

@@ -1,0 +1,81 @@
+
+<div class="container cart">
+  <!-- Estado vacío -->
+  <section class="cart-empty" *ngIf="(vm$ | async)?.items?.length === 0">
+    <div class="card cart-empty__card">
+      <div class="cart-empty__icon">🛍️</div>
+      <h2 class="cart-empty__title">Tu carrito está vacío</h2>
+      <p class="text-muted">Explora los productos y agrega tus favoritos.</p>
+      <a routerLink="/products" class="btn btn--primary btn--lg">Ver productos</a>
+    </div>
+  </section>
+
+  <!-- Carrito con items -->
+  <section class="cart-grid" *ngIf="(vm$ | async) as vm" [class.hidden]="!vm.items?.length">
+    <!-- Lista de items -->
+    <div class="card cart-list">
+      <div class="cart-list__head">
+        <span>Producto</span>
+        <span>Precio</span>
+        <span>Cantidad</span>
+        <span>Subtotal</span>
+        <span></span>
+      </div>
+
+      <div class="cart-item" *ngFor="let it of vm.items">
+        <div class="cart-item__product">
+          <img [src]="it.articulo.imagenUrl" alt="{{ it.articulo.descripcion }}" class="cart-item__img" />
+          <div class="cart-item__meta">
+            <h3 class="cart-item__title">{{ it.articulo.descripcion }}</h3>
+            <p class="text-muted">Código: {{ it.articulo.codigo }}</p>
+          </div>
+        </div>
+
+        <div class="cart-item__price">
+          {{ it.articulo.precio | currency:'MXN' }}
+        </div>
+
+        <div class="cart-item__qty">
+          <button class="btn btn--outline btn--sm" (click)="dec(it)">−</button>
+          <input class="input cart-item__input" type="number" min="1" [ngModel]="it.qty"
+                 (ngModelChange)="updateQty(it, $event)" />
+          <button class="btn btn--outline btn--sm" (click)="inc(it)">＋</button>
+        </div>
+
+        <div class="cart-item__subtotal">
+          {{ (it.articulo.precio * it.qty) | currency:'MXN' }}
+        </div>
+
+        <div class="cart-item__remove">
+          <button class="btn btn--ghost btn--sm" (click)="remove(it)">Quitar</button>
+        </div>
+      </div>
+    </div>
+
+    <aside class="card cart-summary">
+      <h3 class="cart-summary__title">Resumen</h3>
+
+      <div class="cart-summary__row">
+      <span>Artículos</span>
+      <span>{{ totalArticulos }}</span>
+    </div>
+
+    <div class="cart-summary__row">
+      <span>Subtotal</span>
+      <span>{{ totalSubtotal | currency:'MXN' }}</span>
+    </div>
+
+    <div class="cart-summary__row cart-summary__row--total">
+      <span>Total</span>
+      <span>{{ totalSubtotal | currency:'MXN' }}</span>
+    </div>
+
+      <button class="btn btn--accent btn--lg w-full" (click)="checkout()">
+        Proceder al pago
+      </button>
+
+      <a routerLink="/products" class="btn btn--ghost w-full mt-2">Seguir comprando</a>
+    </aside>
+  </section>
+</div>
+

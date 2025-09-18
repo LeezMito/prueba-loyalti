@@ -1,0 +1,23 @@
+@if (!hideNavbar) {
+<nav class="navbar">
+  <div class="navbar__inner container">
+    <div class="navbar__brand">
+      🛒 Tiendita
+    </div>
+
+    <div class="navbar__actions">
+      <a routerLink="/products" class="btn btn--ghost btn--sm">Productos</a>
+      <a routerLink="/cart" class="btn btn--accent btn--sm">
+        Carrito
+        <span class="cart-badge" *ngIf="totalArticulos > 0">
+          {{ totalArticulos }}
+        </span>
+      </a>
+      <button class="btn btn--outline btn--sm" (click)="logout()">
+        Cerrar sesión
+      </button>
+    </div>
+  </div>
+</nav>
+}
+<router-outlet />

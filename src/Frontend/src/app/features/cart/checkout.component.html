@@ -1,0 +1,81 @@
+<div class="container checkout" *ngIf="true">
+  <h2 class="checkout__title">Checkout</h2>
+
+  <div class="checkout__grid">
+    <section class="card checkout__form">
+      <h3>Datos de envío</h3>
+      <form (ngSubmit)="submit(f)" #f="ngForm" class="form" novalidate>
+        <div class="field">
+          <label class="label" for="fullName">Nombre completo</label>
+          <input id="fullName" name="fullName" class="input"
+                 [(ngModel)]="fullName" required />
+        </div>
+
+        <div class="field">
+          <label class="label" for="address">Dirección</label>
+          <textarea id="address" name="address" class="input"
+                    [(ngModel)]="address" required rows="3"></textarea>
+        </div>
+
+        <h3 class="mt-3">Pago</h3>
+        <div class="field field--inline">
+          <label><input type="radio" name="payment" [(ngModel)]="payment" value="card" /> Tarjeta</label>
+          <label><input type="radio" name="payment" [(ngModel)]="payment" value="oxxo" /> OXXO</label>
+          <label><input type="radio" name="payment" [(ngModel)]="payment" value="transfer" /> Transferencia</label>
+        </div>
+
+        <div class="field" *ngIf="payment === 'card'">
+          <label class="label" for="cardNumber">Número de tarjeta</label>
+          <input id="cardNumber" name="cardNumber" class="input"
+                 [(ngModel)]="cardNumber" minlength="12" maxlength="19" />
+          <small class="text-muted">Simulación: no se realizará cargo real.</small>
+        </div>
+
+        <p *ngIf="error" class="alert alert--error mb-3">{{ error }}</p>
+        <p *ngIf="success" class="alert alert--success mb-3">{{ success }}</p>
+
+        <button class="btn btn--accent btn--lg" type="submit" [disabled]="loading">
+          <span class="btn__spinner" *ngIf="loading"></span>
+          Confirmar compra
+        </button>
+      </form>
+    </section>
+
+    <aside class="card checkout__summary">
+      <h3>Resumen</h3>
+
+      <div class="summary-row">
+        <span>Artículos</span>
+        <span>{{ count }}</span>
+      </div>
+
+      <div class="summary-items" *ngIf="items.length; else empty">
+        <div class="summary-item" *ngFor="let it of items">
+          <div class="summary-item__info">
+            <img [src]="it.articulo.imagenUrl" [alt]="it.articulo.descripcion" />
+            <div>
+              <div class="summary-item__title">{{ it.articulo.descripcion }}</div>
+              <div class="text-muted">x{{ it.qty }} · {{ it.articulo.precio | currency:'MXN' }}</div>
+            </div>
+          </div>
+          <div class="summary-item__subtotal">
+            {{ (it.articulo.precio * it.qty) | currency:'MXN' }}
+          </div>
+        </div>
+      </div>
+
+      <ng-template #empty>
+        <p class="text-muted">No hay artículos en tu carrito.</p>
+      </ng-template>
+
+      <div class="summary-sep"></div>
+
+      <div class="summary-row summary-row--total">
+        <span>Total</span>
+        <span>{{ total | currency:'MXN' }}</span>
+      </div>
+
+      <a routerLink="/cart" class="btn btn--ghost w-full mt-2">Volver al carrito</a>
+    </aside>
+  </div>
+</div>

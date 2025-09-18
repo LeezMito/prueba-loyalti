@@ -1,0 +1,73 @@
+@use '../../../styles/variables' as *
+@use '../../../styles/mixins' as *
+
+.grid--products
+  display: grid
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr))
+  gap: $space-4
+
+.product-card
+  display: flex
+  flex-direction: column
+  background: #fff
+  border-radius: $radius-md
+  box-shadow: $shadow-sm
+  overflow: hidden
+  transition: transform .2s ease, box-shadow .2s ease
+  cursor: pointer
+
+  &:hover
+    transform: translateY(-4px)
+    box-shadow: $shadow-md
+
+  &__media
+    width: 100%
+    padding-top: 66% // proporción 3:2
+    position: relative
+    background: $clr-bg
+
+    img
+      position: absolute
+      inset: 0
+      width: 100%
+      height: 100%
+      object-fit: cover
+
+  &__body
+    flex: 1
+    padding: $space-3 $space-4
+
+  &__title
+    margin: 0 0 $space-1 0
+    font-size: 1rem
+    font-weight: 600
+    color: $clr-ink
+
+  &__code
+    font-size: .8rem
+    margin-bottom: $space-2
+
+  &__price
+    font-weight: bold
+    color: $clr-accent
+    font-size: 1rem
+
+  &__footer
+    display: flex
+    justify-content: space-between
+    padding: $space-3 $space-4
+    border-top: 1px solid rgba($clr-ink, .05)
+
+.products-header
+  margin-bottom: 1.5rem
+  text-align: center
+
+.products-header__title
+  font-size: 1.6rem
+  font-weight: 700
+  margin-bottom: 0.25rem
+  color: $clr-ink
+
+.products-header__subtitle
+  font-size: 1rem
+  color: $clr-muted

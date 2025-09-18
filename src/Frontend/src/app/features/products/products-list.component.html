@@ -1,0 +1,30 @@
+<div class="container mt-4">
+  <div class="products-header">
+    <h2 class="products-header__title">
+      Bienvenido, {{ nombreUsuario }}
+    </h2>
+    <p class="products-header__subtitle text-muted">
+      Explora nuestro catálogo y agrega artículos a tu carrito 🛒
+    </p>
+  </div>
+  <div class="grid grid--products">
+    <article class="product-card" *ngFor="let p of items">
+      <div class="product-card__media">
+        <img [src]="p.imagenUrl" alt="{{p.descripcion}}" />
+      </div>
+      <div class="product-card__body">
+        <h3 class="product-card__title">{{ p.descripcion }}</h3>
+        <p class="product-card__code text-muted">Código: {{ p.codigo }}</p>
+        <p class="product-card__price">{{ p.precio | currency:'MXN' }}</p>
+        <p class="text-muted">Sucursal: {{ p.tiendaSucursal }}</p>
+        <p class="stock">Stock: {{ p.stock }}</p>
+      </div>
+      <div class="product-card__footer">
+        <button class="btn btn--primary btn--sm" (click)="addToCart(p)">
+          Agregar al carrito
+        </button>
+        <a class="btn btn--outline btn--sm">Detalles</a>
+      </div>
+    </article>
+  </div>
+</div>

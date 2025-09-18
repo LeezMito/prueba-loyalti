@@ -1,0 +1,30 @@
+@use 'variables' as *
+
+=focus-ring($color: $clr-primary-200)
+  outline: 2px solid $color
+  outline-offset: 2px
+
+=truncate
+  overflow: hidden
+  text-overflow: ellipsis
+  white-space: nowrap
+
+=button-reset
+  appearance: none
+  border: none
+  background: none
+  padding: 0
+  margin: 0
+  font: inherit
+  color: inherit
+  cursor: pointer
+
+=card
+  background: $clr-card
+  border: 1px solid $clr-border
+  border-radius: $radius-lg
+  box-shadow: $shadow-sm
+
+=blur-backdrop($amount: 8px)
+  backdrop-filter: blur($amount)
+  -webkit-backdrop-filter: blur($amount)

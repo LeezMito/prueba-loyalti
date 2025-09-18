@@ -1,0 +1,32 @@
+@use 'variables' as *
+
+*, *::before, *::after
+  box-sizing: border-box
+
+html, body
+  padding: 0
+  margin: 0
+  height: 100%
+
+body
+  font-family: $font-sans
+  color: $clr-ink
+  background: $clr-bg
+
+a
+  color: $clr-accent
+  text-decoration: none
+  &:hover
+    text-decoration: none
+
+.container
+  max-width: $container
+  margin-inline: auto
+  padding-inline: $space-4
+
+.grid
+  display: grid
+  gap: $space-4
+
+.grid--cards
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr))
