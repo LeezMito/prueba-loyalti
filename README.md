@@ -26,7 +26,7 @@ Clona el repo:
 
 ```bash
 git clone https://github.com/LeezMito/prueba-loyalti.git
-cd prueba-loyalti
+cd prueba-loyalti/src
 ```
 
 ### 1) Backend (.NET)
