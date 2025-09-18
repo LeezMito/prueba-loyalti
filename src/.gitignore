@@ -33,10 +33,6 @@ TestResult*/
 *.DS_Store
 Thumbs.db
 
-# ---- Entity Framework ----
-Migrations/
-# (Opcional: si quieres versionar las migraciones quita esta línea)
-
 # ---- Angular / Frontend ----
 Frontend/node_modules/
 Frontend/dist/
