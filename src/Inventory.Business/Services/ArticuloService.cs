@@ -11,7 +11,22 @@ public class ArticuloService(AppDbContext db) : IArticuloService
     {
         return await db.Articulos.AsNoTracking()
             .OrderBy(x => x.Codigo)
-            .Select(x => new ArticuloListItemDto(x.Id, x.Codigo, x.Descripcion, x.Precio, x.ImagenUrl))
+            .Select(x => new ArticuloListItemDto(
+                x.Id,
+                x.Codigo,
+                x.Descripcion,
+                x.Precio,
+                x.ImagenUrl,
+                x.Stock, 
+                x.ArticuloTiendas
+                    .GroupBy(at => new { at.TiendaId, at.Tienda.Sucursal, at.Tienda.Direccion })
+                    .Select(g => new TiendaDto(
+                        g.Key.TiendaId,
+                        g.Key.Sucursal,
+                        g.Key.Direccion ?? string.Empty
+                    ))
+                    .ToList()
+            ))
             .ToListAsync();
     }
 
@@ -19,13 +34,26 @@ public class ArticuloService(AppDbContext db) : IArticuloService
     {
         return await db.Articulos.AsNoTracking()
             .Where(x => x.Id == id)
-            .Select(x => new ArticuloDetailDto(x.Id, x.Codigo, x.Descripcion, x.Precio, x.ImagenUrl))
+            .Select(x => new ArticuloDetailDto(
+                x.Id, x.Codigo,
+                x.Descripcion,
+                x.Precio,
+                x.ImagenUrl,
+                x.Stock
+            ))
             .FirstOrDefaultAsync();
     }
 
     public async Task<int> CreateAsync(ArticuloCreateDto dto)
     {
-        var entity = new Articulo { Codigo = dto.Codigo, Descripcion = dto.Descripcion, Precio = dto.Precio, ImagenUrl = dto.ImagenUrl };
+        var entity = new Articulo
+        {
+            Codigo = dto.Codigo,
+            Descripcion = dto.Descripcion,
+            Precio = dto.Precio,
+            ImagenUrl = dto.ImagenUrl,
+            Stock = dto.Stock
+        };
         db.Articulos.Add(entity);
         await db.SaveChangesAsync();
         return entity.Id;
@@ -38,6 +66,7 @@ public class ArticuloService(AppDbContext db) : IArticuloService
         entity.Descripcion = dto.Descripcion;
         entity.Precio = dto.Precio;
         entity.ImagenUrl = dto.ImagenUrl;
+        entity.Stock = entity.Stock;
         await db.SaveChangesAsync();
     }
 

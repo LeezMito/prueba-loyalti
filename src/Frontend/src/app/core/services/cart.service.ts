@@ -6,127 +6,171 @@ export interface CartOpResult {
 }
 
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { CartItem, CartState } from '../models/cart';
-import { ArticuloListItemDto } from '../models/articulo';
+import { ArticuloItemDto } from '../models/articulo';
 import { ClienteArticuloService } from './cliente-articulo.service';
 import { AuthService } from '../services/auth.service';
-import { firstValueFrom } from 'rxjs';
-
-const LS_KEY = 'inventory_cart_state_v2';
+import { ClienteArticuloItemDto } from '../models/cliente-articulo';
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
-  private state$: BehaviorSubject<CartState>;
+  private state$ = new BehaviorSubject<CartState>({ items: [] });
 
-  constructor(private clienteArticulo: ClienteArticuloService, private auth: AuthService) {
-    const saved = localStorage.getItem(LS_KEY);
-    const initial: CartState = saved ? JSON.parse(saved) : { items: [] };
-    const cid = this.auth.snapshot.clienteId;
-    this.state$ = new BehaviorSubject<CartState>({
-      ...initial,
-      clienteId: cid ?? initial.clienteId,
+  constructor(
+    private clienteArticulo: ClienteArticuloService,
+    private auth: AuthService
+  ) {
+    this.auth.select().subscribe(async s => {
+      await this.setCliente(s.clienteId);
     });
-    this.auth.select().subscribe((s) => this.patch({ clienteId: s.clienteId }));
+    if (this.auth.snapshot?.clienteId) {
+      this.setCliente(this.auth.snapshot.clienteId);
+    }
   }
 
-  select() {
-    return this.state$.asObservable();
-  }
-  get snapshot(): CartState {
-    return this.state$.value;
-  }
-  private save(state: CartState) {
-    localStorage.setItem(LS_KEY, JSON.stringify(state));
+  select() { return this.state$.asObservable(); }
+
+  get snapshot(): CartState { return this.state$.value; }
+
+  private setState(state: CartState) {
     this.state$.next({ ...state });
   }
-  private patch(partial: Partial<CartState>) {
-    this.save({ ...this.snapshot, ...partial });
+
+  private async reload(clienteId: number) {
+    const rows = await firstValueFrom(this.clienteArticulo.listByCliente(clienteId));
+    const grouped = this.hydrateFromApi(rows);
+    this.setState({ clienteId, items: grouped });
   }
 
-  setCliente(id: number | undefined) {
-    this.patch({ clienteId: id });
+  private hydrateFromApi(rows: ClienteArticuloItemDto[]): CartItem[] {
+    const map = new Map<number, CartItem>();
+    for (const r of rows) {
+      const a: ArticuloItemDto = {
+        id: r.articuloId,
+        codigo: r.articuloCodigo,
+        descripcion: r.articuloDescripcion,
+        precio: r.articuloPrecio,
+        imagenUrl: r.articuloImagenUrl ?? null,
+        stock: r.stock,
+        fecha: r.fecha,
+        tiendas: null!,
+      };
+      const existing = map.get(a.id);
+      if (existing) {
+        existing.qty += 1;
+        existing.fechas.push(r.fecha);
+      } else {
+        map.set(a.id, { articulo: a, qty: 1, fechas: [r.fecha] });
+      }
+    }
+    return Array.from(map.values());
   }
+
+  async setCliente(id: number | undefined) {
+    if (!id) { this.setState({ items: [], clienteId: undefined }); return; }
+    await this.reload(id);
+  }
+
   clear() {
-    this.save({ items: [], clienteId: this.snapshot.clienteId });
+    this.setState({ items: [], clienteId: this.snapshot.clienteId });
   }
 
-  add(articulo: ArticuloListItemDto, qty: number = 1): CartOpResult {
-    const s = { ...this.snapshot, items: [...this.snapshot.items] };
-    const idx = s.items.findIndex((i) => i.articulo.id === articulo.id);
+  async add(articulo: ArticuloItemDto, qty: number = 1): Promise<CartOpResult> {
+    const clienteId = this.snapshot.clienteId;
+    if (!clienteId) throw new Error('No hay cliente autenticado');
 
     const stockMax = Number(articulo.stock ?? 0);
-    const currentQty = idx >= 0 ? s.items[idx].qty : 0;
+    const line = this.snapshot.items.find(i => i.articulo.id === articulo.id);
+    const currentQty = line?.qty ?? 0;
+
     if (stockMax <= 0) return { ok: false, reason: 'out_of_stock', max: 0, qty: currentQty };
 
     const desired = currentQty + qty;
-    if (desired <= stockMax) {
-      if (idx >= 0) s.items[idx] = { ...s.items[idx], qty: desired };
-      else s.items.push({ articulo, qty, fechas: [] });
-      this.save(s);
-      return { ok: true, qty: desired, max: stockMax };
+    const toCreate = Math.min(qty, Math.max(0, stockMax - currentQty));
+
+    if (toCreate <= 0) {
+      return currentQty >= stockMax
+        ? { ok: false, reason: 'out_of_stock', max: stockMax, qty: currentQty }
+        : { ok: false, reason: 'limited', max: stockMax, qty: currentQty };
     }
 
-    if (currentQty >= stockMax) {
-      return { ok: false, reason: 'out_of_stock', max: stockMax, qty: currentQty };
+    for (let i = 0; i < toCreate; i++) {
+      const fecha = new Date().toISOString();
+      await firstValueFrom(this.clienteArticulo.create({
+        clienteId,
+        articuloId: articulo.id,
+        fecha
+      }));
     }
 
-    if (idx >= 0) s.items[idx] = { ...s.items[idx], qty: stockMax };
-    else s.items.push({ articulo, qty: stockMax, fechas: [] });
-    this.save(s);
-    return { ok: false, reason: 'limited', max: stockMax, qty: stockMax };
+    await this.reload(clienteId);
+
+    if (desired > stockMax) {
+      return { ok: false, reason: 'limited', max: stockMax, qty: stockMax };
+    }
+    return { ok: true, qty: desired, max: stockMax };
   }
 
-  updateQty(articuloId: number, qty: number): CartOpResult {
-    const s = { ...this.snapshot, items: [...this.snapshot.items] };
-    const idx = s.items.findIndex((i) => i.articulo.id === articuloId);
-    if (idx < 0) return { ok: false };
+  async updateQty(articuloId: number, qty: number): Promise<CartOpResult> {
+    const clienteId = this.snapshot.clienteId;
+    if (!clienteId) throw new Error('No hay cliente autenticado');
 
-    const stockMax = Number(s.items[idx].articulo.stock ?? 0);
+    const line = this.snapshot.items.find(i => i.articulo.id === articuloId);
+    if (!line) return { ok: false };
 
+    const stockMax = Number(line.articulo.stock ?? 0);
     if (qty <= 0) {
-      s.items.splice(idx, 1);
-      this.save(s);
+      for (const f of line.fechas) {
+        await firstValueFrom(this.clienteArticulo.delete(clienteId, articuloId, f));
+      }
+      await this.reload(clienteId);
       return { ok: true, qty: 0, max: stockMax };
     }
 
     if (stockMax <= 0) {
-      s.items[idx] = { ...s.items[idx], qty: 0 };
-      this.save(s);
+      for (const f of line.fechas) {
+        await firstValueFrom(this.clienteArticulo.delete(clienteId, articuloId, f));
+      }
+      await this.reload(clienteId);
       return { ok: false, reason: 'out_of_stock', max: 0, qty: 0 };
     }
 
-    if (qty > stockMax) {
-      s.items[idx] = { ...s.items[idx], qty: stockMax };
-      this.save(s);
-      return { ok: false, reason: 'limited', max: stockMax, qty: stockMax };
+    const current = line.qty;
+    const target = Math.min(qty, stockMax);
+
+    if (target > current) {
+      const diff = target - current;
+      for (let i = 0; i < diff; i++) {
+        const fecha = new Date().toISOString();
+        await firstValueFrom(this.clienteArticulo.create({ clienteId, articuloId, fecha }));
+      }
+    } else if (target < current) {
+      const diff = current - target;
+      for (let i = 0; i < diff; i++) {
+        const fecha = line.fechas[line.fechas.length - 1 - i];
+        await firstValueFrom(this.clienteArticulo.delete(clienteId, articuloId, fecha));
+      }
     }
 
-    s.items[idx] = { ...s.items[idx], qty };
-    this.save(s);
-    return { ok: true, qty, max: stockMax };
+    await this.reload(clienteId);
+
+    if (qty > stockMax) {
+      return { ok: false, reason: 'limited', max: stockMax, qty: stockMax };
+    }
+    return { ok: true, qty: target, max: stockMax };
   }
 
   async remove(articuloId: number) {
     const clienteId = this.snapshot.clienteId;
     if (!clienteId) throw new Error('No hay cliente autenticado');
 
-    const prev = structuredClone(this.snapshot);
-    const s: CartState = structuredClone(this.snapshot);
+    const line = this.snapshot.items.find(i => i.articulo.id === articuloId);
+    if (!line) return;
 
-    const idx = s.items.findIndex((i) => i.articulo.id === articuloId);
-    if (idx < 0) return;
-
-    const line = s.items[idx] as CartItem;
-    try {
-      for (const f of line.fechas) {
-        await firstValueFrom(this.clienteArticulo.delete(clienteId, articuloId, f));
-      }
-      s.items.splice(idx, 1);
-      this.save(s);
-    } catch (e) {
-      this.save(prev);
-      throw e;
+    for (const f of line.fechas) {
+      await firstValueFrom(this.clienteArticulo.delete(clienteId, articuloId, f));
     }
+    await this.reload(clienteId);
   }
 }

@@ -1,5 +1,6 @@
 using Inventory.Business.Services;
 using Inventory.Entities.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory.WebApi.Controllers;
@@ -25,6 +26,7 @@ public class TiendasController(ITiendaService svc) : ControllerBase
     [HttpPost]
     [ProducesResponseType(201)]
     [ProducesResponseType(400)]
+    [Authorize]
     public async Task<IActionResult> Create([FromBody] TiendaCreateDto dto)
     {
         var id = await svc.CreateAsync(dto);
@@ -34,6 +36,7 @@ public class TiendasController(ITiendaService svc) : ControllerBase
     [HttpPut("{id:int}")]
     [ProducesResponseType(204)]
     [ProducesResponseType(404)]
+    [Authorize]
     public async Task<IActionResult> Update(int id, [FromBody] TiendaUpdateDto dto)
     {
         await svc.UpdateAsync(id, dto);
@@ -43,6 +46,7 @@ public class TiendasController(ITiendaService svc) : ControllerBase
     [HttpDelete("{id:int}")]
     [ProducesResponseType(204)]
     [ProducesResponseType(404)]
+    [Authorize]
     public async Task<IActionResult> Delete(int id)
     {
         await svc.DeleteAsync(id);

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms'; // 👈 AÑADE ESTO
+import { FormsModule } from '@angular/forms';
 import { CartService } from '../../core/services/cart.service';
 import { cartTotal } from '../../core/models/cart';
 import { Observable } from 'rxjs';
@@ -22,26 +22,31 @@ export class CartComponent {
 
   ngOnInit(): void {
     this.vm$ = this.cart.select();
-    this.vm$.subscribe((state) => (this.vm = state));
+    this.vm$.subscribe((state) => {
+      this.vm = state;
+    });
   }
 
   total(state: any) {
     return cartTotal(state);
   }
-  inc(it: any) {
-    const res = this.cart.updateQty(it.articulo.id, it.qty + 1);
+
+  async inc(it: any) {
+    const res = await this.cart.updateQty(it.articulo.id, it.qty + 1);
     if (!res.ok && res.reason === 'limited') {
       this.toastr.warning(`Stock máximo: ${res.max} pza(s).`, 'Stock limitado');
     } else if (!res.ok && res.reason === 'out_of_stock') {
       this.toastr.error('Sin stock disponible.', 'Carrito');
     }
   }
+
   dec(it: any) {
     if (it.qty > 1) this.cart.updateQty(it.articulo.id, it.qty - 1);
   }
-  updateQty(it: any, val: number) {
+
+  async updateQty(it: any, val: number) {
     const q = Math.max(1, Number(val) || 1);
-    const res = this.cart.updateQty(it.articulo.id, q);
+    const res = await this.cart.updateQty(it.articulo.id, q);
     if (!res.ok && res.reason === 'limited') {
       this.toastr.warning(`Stock máximo: ${res.max} pza(s).`, 'Stock limitado');
     } else if (!res.ok && res.reason === 'out_of_stock') {

@@ -4,11 +4,12 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { CartService } from '../../core/services/cart.service';
 import { AuthService } from '../../core/services/auth.service';
 import { OrderService } from '../../core/services/order.service';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.sass'],
 })
@@ -56,19 +57,9 @@ export class CheckoutComponent {
 
     this.loading = true;
 
-    const payload = {
-      clienteId: this.cart.snapshot.clienteId!,
-      items: this.items.map(l => ({ articuloId: l.articulo.id, qty: l.qty })),
-      shippingAddress: this.address,
-      paymentMethod: this.payment,
-      cardLast4: this.payment === 'card' ? this.cardNumber.slice(-4) : null,
-      total: this.total
-    };
-
-    this.orders.createOrder(payload).subscribe({
+    this.orders.createOrder().subscribe({
       next: res => {
-        this.orderId = res.orderId;
-        this.success = `¡Compra realizada con éxito! #${res.orderId} 🎉`;
+        this.success = `¡Compra realizada con éxito! 🎉`;
         this.cart.clear();
         this.loading = false;
       },

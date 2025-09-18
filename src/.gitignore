@@ -1,0 +1,55 @@
+# ---- .NET / C# ----
+bin/
+obj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+*.user
+*.suo
+*.cache
+*.pdb
+*.mdb
+*.dbmdl
+*.bak
+*.log
+*.ldf
+*.ndf
+
+# Visual Studio
+.vs/
+*.vscode/
+
+# Rider
+.idea/
+
+# Test results
+TestResult*/
+*.VisualState.xml
+*.ncrunch*
+*.coverage
+*.coveragexml
+
+# Otros
+*.DS_Store
+Thumbs.db
+
+# ---- Entity Framework ----
+Migrations/
+# (Opcional: si quieres versionar las migraciones quita esta línea)
+
+# ---- Angular / Frontend ----
+Frontend/node_modules/
+Frontend/dist/
+Frontend/out-tsc/
+Frontend/.angular/
+Frontend/.sass-cache/
+Frontend/.cache/
+
+# ---- NPM / Yarn / pnpm ----
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ---- Sistema Operativo ----
+ehthumbs.db
+desktop.ini

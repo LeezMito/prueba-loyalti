@@ -16,7 +16,12 @@
         <h3 class="product-card__title">{{ p.descripcion }}</h3>
         <p class="product-card__code text-muted">Código: {{ p.codigo }}</p>
         <p class="product-card__price">{{ p.precio | currency:'MXN' }}</p>
-        <p class="text-muted">Sucursal: {{ p.tiendaSucursal }}</p>
+        <div class="text-muted">
+          <span *ngFor="let t of p.tiendas.slice(0, 2); let last = last">
+            {{ t.sucursal }}<span *ngIf="!last">, </span>
+          </span>
+          <span *ngIf="p.tiendas.length > 2"> ...</span>
+        </div>
         <p class="stock">Stock: {{ p.stock }}</p>
       </div>
       <div class="product-card__footer">

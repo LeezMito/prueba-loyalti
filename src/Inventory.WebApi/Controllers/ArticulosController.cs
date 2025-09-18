@@ -11,12 +11,14 @@ public class ArticulosController(IArticuloService svc) : ControllerBase
 {
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<ArticuloListItemDto>), 200)]
+    [Authorize]
     public async Task<IActionResult> GetAll()
         => Ok(await svc.GetAllAsync());
 
     [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(ArticuloDetailDto), 200)]
     [ProducesResponseType(404)]
+    [Authorize]
     public async Task<IActionResult> GetById(int id)
     {
         var dto = await svc.GetByIdAsync(id);
@@ -36,6 +38,7 @@ public class ArticulosController(IArticuloService svc) : ControllerBase
     [HttpPut("{id:int}")]
     [ProducesResponseType(204)]
     [ProducesResponseType(404)]
+    [Authorize]
     public async Task<IActionResult> Update(int id, [FromBody] ArticuloUpdateDto dto)
     {
         await svc.UpdateAsync(id, dto);
@@ -45,6 +48,7 @@ public class ArticulosController(IArticuloService svc) : ControllerBase
     [HttpDelete("{id:int}")]
     [ProducesResponseType(204)]
     [ProducesResponseType(404)]
+    [Authorize]
     public async Task<IActionResult> Delete(int id)
     {
         await svc.DeleteAsync(id);

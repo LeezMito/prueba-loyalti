@@ -1,6 +1,10 @@
 namespace Inventory.Entities.DTOs;
 
-public record ClienteArticuloCreateDto(int ClienteId, int ArticuloId, DateTime? Fecha = null);
+public record ClienteArticuloCreateDto(
+    int ClienteId,
+    int ArticuloId,
+    DateTime? Fecha = null
+);
 
 public record ClienteArticuloListItemDto(
     int ClienteId,
@@ -8,5 +12,10 @@ public record ClienteArticuloListItemDto(
     int ArticuloId,
     string ArticuloCodigo,
     string ArticuloDescripcion,
-    DateTime Fecha
+    DateTime Fecha,
+    int? TiendaId,
+    string? TiendaSucursal, 
+    decimal ArticuloPrecio,
+    string? ArticuloImagenUrl,
+    int Stock
 );

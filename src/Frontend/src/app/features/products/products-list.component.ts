@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CartService } from '../../core/services/cart.service';
-import { ArticuloListItemDto } from '../../core/models/articulo';
+import { ArticuloItemDto } from '../../core/models/articulo';
 import { AuthService } from '../../core/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { ArticuloTiendaService } from '../../core/services/articulo-tienda.service';
-import { ArticuloTiendaListItemDto } from '../../core/models/articulo-tienda';
+import { ArticuloService } from '../../core/services/articulo.service';
 
 @Component({
   selector: 'app-products-list',
@@ -17,11 +16,11 @@ import { ArticuloTiendaListItemDto } from '../../core/models/articulo-tienda';
 })
 export class ProductsListComponent implements OnInit {
   
-  items: ArticuloListItemDto[] = [];
+  items: ArticuloItemDto[] = [];
   loading = false;
 
   constructor(
-    private api: ArticuloTiendaService, 
+    private api: ArticuloService, 
     private cart: CartService, 
     public auth: AuthService,
     private toastr: ToastrService
@@ -30,16 +29,15 @@ export class ProductsListComponent implements OnInit {
   ngOnInit(): void {
     this.loading = true;
     this.api.list().subscribe({
-      next: (d: ArticuloTiendaListItemDto[]) => {
+      next: (d: ArticuloItemDto[]) => {
         this.items = d.map(x => ({
-          id: x.articuloId,
-          codigo: x.articuloCodigo,
-          descripcion: x.articuloDescripcion,
+          id: x.id,
+          codigo: x.codigo,
+          descripcion: x.descripcion,
           precio: x.precio,
-          imagenUrl: x.articuloImagenUrl,
+          imagenUrl: x.imagenUrl,
           stock: x.stock,
-          tiendaSucursal: x.tiendaSucursal,
-          tiendaId: x.tiendaId,
+          tiendas: x.tiendas,
         }));
         this.loading = false;
       },
@@ -47,17 +45,14 @@ export class ProductsListComponent implements OnInit {
     });
   }
   
-  addToCart(item: ArticuloListItemDto) {
-    const res = this.cart.add(item, 1);
+  async addToCart(item: ArticuloItemDto) {
+    const res = await this.cart.add(item, 1);
     if (res.ok) {
       this.toastr.success(`Añadido: ${item.descripcion}`, 'Carrito');
     } else if (res.reason === 'out_of_stock') {
       this.toastr.error(`Ya no hay stock disponible de "${item.descripcion}".`, 'Sin stock');
     } else if (res.reason === 'limited') {
-      this.toastr.warning(
-        `Solo hay ${res.max} pza(s) de "${item.descripcion}". Se ajustó al máximo.`,
-        'Stock limitado'
-      );
+      this.toastr.warning(`Solo hay ${res.max} pza(s). Se ajustó al máximo.`, 'Stock limitado');
     }
   }
 

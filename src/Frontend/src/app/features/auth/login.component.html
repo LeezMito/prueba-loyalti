@@ -7,7 +7,6 @@
     </div>
 
     <form (ngSubmit)="submit()" #f="ngForm" class="auth__form" novalidate>
-      <!-- Email -->
       <div class="field">
         <label class="label" for="email">Email</label>
         <input
@@ -23,12 +22,15 @@
           autocomplete="email"
         />
         <div class="error" *ngIf="emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)">
-          <p *ngIf="emailCtrl.errors?.['required']">El correo es obligatorio.</p>
-          <p *ngIf="emailCtrl.errors?.['email']">Ingresa un correo válido.</p>
+            @if(emailCtrl.errors?.['required']){
+            <p>El correo es obligatorio.</p>
+            }
+            @if(emailCtrl.errors?.['email']){
+            <p>Ingresa un correo válido.</p>
+            }
         </div>
       </div>
 
-      <!-- Password -->
       <div class="field">
         <label class="label" for="password">Contraseña</label>
         <input
@@ -44,15 +46,23 @@
           autocomplete="current-password"
         />
         <div class="error" *ngIf="passwordCtrl.invalid && (passwordCtrl.dirty || passwordCtrl.touched)">
-          <p *ngIf="passwordCtrl.errors?.['required']">La contraseña es obligatoria.</p>
-          <p *ngIf="passwordCtrl.errors?.['minlength']">Debe tener al menos 6 caracteres.</p>
+          @if(passwordCtrl.errors?.['required']){
+          <p>La contraseña es obligatoria.</p>
+          }
+          @if(passwordCtrl.errors?.['minlength']){
+          <p>Debe tener al menos 6 caracteres.</p>
+          }
         </div>
       </div>
 
-      <p *ngIf="error" class="alert alert--error mb-3">{{ error }}</p>
+      @if(error){
+        <p class="alert alert--error mb-3">{{ error }}</p>
+      }
 
       <button class="btn btn--accent btn--lg w-full" [disabled]="loading" type="submit">
-        <span class="btn__spinner" *ngIf="loading"></span>
+        @if(loading){
+          <span class="btn__spinner"></span>
+        }
         Entrar
       </button>
 

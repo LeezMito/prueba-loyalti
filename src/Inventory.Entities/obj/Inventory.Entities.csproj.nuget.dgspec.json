@@ -1,25 +1,28 @@
 {
   "format": 1,
   "restore": {
-    "/home/guillermo/Documentos/inventory/src/Inventory.Entities/Inventory.Entities.csproj": {}
+    "E:\\Maxal\\prueba-loyalti\\src\\Inventory.Entities\\Inventory.Entities.csproj": {}
   },
   "projects": {
-    "/home/guillermo/Documentos/inventory/src/Inventory.Entities/Inventory.Entities.csproj": {
+    "E:\\Maxal\\prueba-loyalti\\src\\Inventory.Entities\\Inventory.Entities.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/guillermo/Documentos/inventory/src/Inventory.Entities/Inventory.Entities.csproj",
+        "projectUniqueName": "E:\\Maxal\\prueba-loyalti\\src\\Inventory.Entities\\Inventory.Entities.csproj",
         "projectName": "Inventory.Entities",
-        "projectPath": "/home/guillermo/Documentos/inventory/src/Inventory.Entities/Inventory.Entities.csproj",
-        "packagesPath": "/home/guillermo/.nuget/packages/",
-        "outputPath": "/home/guillermo/Documentos/inventory/src/Inventory.Entities/obj/",
+        "projectPath": "E:\\Maxal\\prueba-loyalti\\src\\Inventory.Entities\\Inventory.Entities.csproj",
+        "packagesPath": "C:\\Users\\leezm\\.nuget\\packages\\",
+        "outputPath": "E:\\Maxal\\prueba-loyalti\\src\\Inventory.Entities\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/guillermo/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\leezm\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -32,6 +35,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -53,7 +61,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.118/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -6,15 +6,42 @@
       <h3>Datos de envío</h3>
       <form (ngSubmit)="submit(f)" #f="ngForm" class="form" novalidate>
         <div class="field">
-          <label class="label" for="fullName">Nombre completo</label>
-          <input id="fullName" name="fullName" class="input"
-                 [(ngModel)]="fullName" required />
+          <label class="label" for="fullName">Nombre completo*</label>
+          <input
+            id="fullName"
+            name="fullName"
+            class="input"
+            [(ngModel)]="fullName"
+            required
+            minlength="4"
+            #fullNameCtrl="ngModel"
+          />
+          <p *ngIf="fullNameCtrl.invalid && fullNameCtrl.touched" class="error">
+            <span *ngIf="fullNameCtrl.errors?.['required']">El nombre es obligatorio.</span>
+            <span *ngIf="fullNameCtrl.errors?.['minlength']">
+              Debe tener al menos 4 caracteres.
+            </span>
+          </p>
         </div>
 
         <div class="field">
-          <label class="label" for="address">Dirección</label>
-          <textarea id="address" name="address" class="input"
-                    [(ngModel)]="address" required rows="3"></textarea>
+          <label class="label" for="address">Dirección*</label>
+           <textarea
+            id="address"
+            name="address"
+            class="input"
+            [(ngModel)]="address"
+            required
+            minlength="10"
+            rows="3"
+            #addressCtrl="ngModel"
+          ></textarea>
+          <p *ngIf="addressCtrl.invalid && addressCtrl.touched" class="error">
+            <span *ngIf="addressCtrl.errors?.['required']">La dirección es obligatoria.</span>
+            <span *ngIf="addressCtrl.errors?.['minlength']">
+              Debe tener al menos 10 caracteres.
+            </span>
+          </p>
         </div>
 
         <h3 class="mt-3">Pago</h3>
@@ -27,7 +54,7 @@
         <div class="field" *ngIf="payment === 'card'">
           <label class="label" for="cardNumber">Número de tarjeta</label>
           <input id="cardNumber" name="cardNumber" class="input"
-                 [(ngModel)]="cardNumber" minlength="12" maxlength="19" />
+                 [(ngModel)]="cardNumber"/>
           <small class="text-muted">Simulación: no se realizará cargo real.</small>
         </div>
 
@@ -75,7 +102,7 @@
         <span>{{ total | currency:'MXN' }}</span>
       </div>
 
-      <a routerLink="/cart" class="btn btn--ghost w-full mt-2">Volver al carrito</a>
+      <a routerLink="/products" class="btn btn--ghost w-full mt-2">Volver a productos</a>
     </aside>
   </div>
 </div>

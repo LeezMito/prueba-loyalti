@@ -6,7 +6,7 @@ namespace Inventory.Business.Services;
 
 public class ArticuloTiendaService(AppDbContext db) : IArticuloTiendaService
 {
-    public async Task<IEnumerable<ArticuloTiendaListItemDto>> GetAsync(int? tiendaId = null, int? articuloId = null)
+    public async Task<IEnumerable<ArticuloTiendaItemDto>> GetAsync(int? tiendaId = null, int? articuloId = null)
     {
         var q = db.ArticuloTiendas
             .Include(x => x.Articulo)
@@ -18,28 +18,31 @@ public class ArticuloTiendaService(AppDbContext db) : IArticuloTiendaService
 
         return await q
             .OrderBy(x => x.Tienda.Sucursal).ThenBy(x => x.Articulo.Codigo)
-            .Select(x => new ArticuloTiendaListItemDto(
+            .Select(x => new ArticuloTiendaItemDto(
                 x.ArticuloId,
                 x.Articulo.Codigo,
                 x.Articulo.Descripcion,
                 x.TiendaId,
                 x.Tienda.Sucursal,
-                x.Stock,
                 x.Articulo.Precio,
                 x.FechaAlta
             ))
             .ToListAsync();
     }
 
-    public async Task<ArticuloTiendaListItemDto?> GetOneAsync(int articuloId, int tiendaId)
+    public async Task<ArticuloTiendaItemDto?> GetOneAsync(int articuloId, int tiendaId)
     {
         return await db.ArticuloTiendas
             .Include(x => x.Articulo).Include(x => x.Tienda)
             .Where(x => x.ArticuloId == articuloId && x.TiendaId == tiendaId)
-            .Select(x => new ArticuloTiendaListItemDto(
-                x.ArticuloId, x.Articulo.Codigo, x.Articulo.Descripcion,
-                x.TiendaId, x.Tienda.Sucursal,
-                x.Stock, x.Articulo.Precio, x.FechaAlta
+            .Select(x => new ArticuloTiendaItemDto(
+                x.ArticuloId,
+                x.Articulo.Codigo,
+                x.Articulo.Descripcion,
+                x.TiendaId,
+                x.Tienda.Sucursal,
+                x.Articulo.Precio,
+                x.FechaAlta
             )).FirstOrDefaultAsync();
     }
 
@@ -49,7 +52,6 @@ public class ArticuloTiendaService(AppDbContext db) : IArticuloTiendaService
         {
             ArticuloId = dto.ArticuloId,
             TiendaId = dto.TiendaId,
-            Stock = dto.Stock,
             FechaAlta = dto.FechaAlta ?? DateTime.UtcNow.Date
         };
         db.ArticuloTiendas.Add(entity);
@@ -61,7 +63,6 @@ public class ArticuloTiendaService(AppDbContext db) : IArticuloTiendaService
         var entity = await db.ArticuloTiendas.FindAsync(articuloId, tiendaId)
             ?? throw new KeyNotFoundException("Relación Articulo-Tienda no encontrada.");
 
-        entity.Stock = dto.Stock;
         if (dto.FechaAlta.HasValue) entity.FechaAlta = dto.FechaAlta.Value;
         await db.SaveChangesAsync();
     }

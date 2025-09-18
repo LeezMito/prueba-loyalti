@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { ArticuloDetailDto, ArticuloListItemDto } from '../models/articulo';
+import { ArticuloDetailDto, ArticuloItemDto } from '../models/articulo';
 
 @Injectable({ providedIn: 'root' })
 export class ArticuloService {
@@ -11,8 +11,8 @@ export class ArticuloService {
 
   constructor(private http: HttpClient) {}
 
-  list(): Observable<ArticuloListItemDto[]> {
-    return this.http.get<ArticuloListItemDto[]>(this.base);
+  list(): Observable<ArticuloItemDto[]> {
+    return this.http.get<ArticuloItemDto[]>(this.base);
   }
   
   get(id: number): Observable<ArticuloDetailDto> {

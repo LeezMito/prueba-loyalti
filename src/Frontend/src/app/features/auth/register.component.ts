@@ -19,7 +19,7 @@ export class RegisterComponent {
   direccion = '';
   loading = false;
   error?: string;
-  success?: string; // 👈 mensaje de éxito
+  success?: string;
 
   constructor(private auth: AuthService, private router: Router) {}
 

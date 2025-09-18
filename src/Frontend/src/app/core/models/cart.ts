@@ -1,7 +1,7 @@
-import { ArticuloListItemDto } from './articulo';
+import { ArticuloItemDto } from './articulo';
 
 export interface CartItem {
-  articulo: ArticuloListItemDto;
+  articulo: ArticuloItemDto;
   qty: number;
   fechas: string[];
 }

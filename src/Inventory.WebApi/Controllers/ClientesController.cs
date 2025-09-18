@@ -11,12 +11,14 @@ public class ClientesController(IClienteService svc) : ControllerBase
 {
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<ClienteListItemDto>), 200)]
+    [Authorize]
     public async Task<IActionResult> GetAll()
         => Ok(await svc.GetAllAsync());
 
     [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(ClienteDetailDto), 200)]
     [ProducesResponseType(404)]
+    [Authorize]
     public async Task<IActionResult> GetById(int id)
     {
         var dto = await svc.GetByIdAsync(id);
@@ -26,6 +28,7 @@ public class ClientesController(IClienteService svc) : ControllerBase
     [HttpPost]
     [ProducesResponseType(201)]
     [ProducesResponseType(400)]
+    [Authorize]
 
     public async Task<IActionResult> Create([FromBody] ClienteCreateDto dto)
     {
@@ -36,6 +39,7 @@ public class ClientesController(IClienteService svc) : ControllerBase
     [HttpPut("{id:int}")]
     [ProducesResponseType(204)]
     [ProducesResponseType(404)]
+    [Authorize]
     public async Task<IActionResult> Update(int id, [FromBody] ClienteUpdateDto dto)
     {
         await svc.UpdateAsync(id, dto);
@@ -45,6 +49,7 @@ public class ClientesController(IClienteService svc) : ControllerBase
     [HttpDelete("{id:int}")]
     [ProducesResponseType(204)]
     [ProducesResponseType(404)]
+    [Authorize]
     public async Task<IActionResult> Delete(int id)
     {
         await svc.DeleteAsync(id);

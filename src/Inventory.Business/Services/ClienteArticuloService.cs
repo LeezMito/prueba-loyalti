@@ -1,5 +1,6 @@
 using Inventory.Data;
 using Inventory.Entities.DTOs;
+using Inventory.Entities.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Inventory.Business.Services;
@@ -9,38 +10,45 @@ public class ClienteArticuloService(AppDbContext db) : IClienteArticuloService
     public async Task<IEnumerable<ClienteArticuloListItemDto>> GetByClienteAsync(int clienteId)
     {
         return await db.ClienteArticulos
-            .Include(x => x.Cliente).Include(x => x.Articulo)
+            .AsNoTracking()
+            .Include(x => x.Cliente)
+            .Include(x => x.Articulo)
             .Where(x => x.ClienteId == clienteId)
-            .OrderByDescending(x => x.Fecha)
+            .OrderByDescending(x => x.ArticuloId)
             .Select(x => new ClienteArticuloListItemDto(
                 x.ClienteId,
                 x.Cliente.Nombre + " " + x.Cliente.Apellidos,
                 x.ArticuloId,
                 x.Articulo.Codigo,
                 x.Articulo.Descripcion,
-                x.Fecha
-            )).ToListAsync();
-    }
-
-    public async Task<IEnumerable<ClienteArticuloListItemDto>> GetByArticuloAsync(int articuloId)
-    {
-        return await db.ClienteArticulos
-            .Include(x => x.Cliente).Include(x => x.Articulo)
-            .Where(x => x.ArticuloId == articuloId)
-            .OrderByDescending(x => x.Fecha)
-            .Select(x => new ClienteArticuloListItemDto(
-                x.ClienteId,
-                x.Cliente.Nombre + " " + x.Cliente.Apellidos,
-                x.ArticuloId,
-                x.Articulo.Codigo,
-                x.Articulo.Descripcion,
-                x.Fecha
-            )).ToListAsync();
+                x.Fecha,
+                db.ArticuloTiendas
+                    .Where(at => at.ArticuloId == x.ArticuloId)
+                    .OrderByDescending(at => at.Articulo.Stock)
+                    .ThenBy(at => at.Tienda.Sucursal)
+                    .Select(at => (int?)at.TiendaId)
+                    .FirstOrDefault(),
+                db.ArticuloTiendas
+                    .Where(at => at.ArticuloId == x.ArticuloId)
+                    .OrderByDescending(at => at.Articulo.Stock)
+                    .ThenBy(at => at.Tienda.Sucursal)
+                    .Select(at => at.Tienda.Sucursal)
+                    .FirstOrDefault(),
+                x.Articulo.Precio,
+                x.Articulo.ImagenUrl,
+                db.ArticuloTiendas
+                    .Where(at => at.ArticuloId == x.ArticuloId)
+                    .OrderByDescending(at => at.Articulo.Stock)
+                    .ThenBy(at => at.Tienda.Sucursal)
+                    .Select(at => at.Articulo.Stock)
+                    .FirstOrDefault()
+            ))
+            .ToListAsync();
     }
 
     public async Task CreateAsync(ClienteArticuloCreateDto dto)
     {
-        var entity = new Inventory.Entities.Models.ClienteArticulo
+        var entity = new ClienteArticulo
         {
             ClienteId = dto.ClienteId,
             ArticuloId = dto.ArticuloId,

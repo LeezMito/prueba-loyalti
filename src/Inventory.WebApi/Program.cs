@@ -18,6 +18,7 @@ builder.Services.AddScoped<IArticuloService, ArticuloService>();
 builder.Services.AddScoped<IArticuloTiendaService, ArticuloTiendaService>();
 builder.Services.AddScoped<IClienteArticuloService, ClienteArticuloService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ICheckoutService, CheckoutService>();
 
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssembly(typeof(ArticuloService).Assembly);

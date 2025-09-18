@@ -9,5 +9,4 @@ public class ArticuloTienda
     public Tienda Tienda { get; set; } = null!;
 
     public DateTime FechaAlta { get; set; }
-    public int Stock { get; set; }
 }

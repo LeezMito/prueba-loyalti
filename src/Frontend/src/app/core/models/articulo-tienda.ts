@@ -1,4 +1,4 @@
-export interface ArticuloTiendaListItemDto {
+export interface ArticuloTiendaItemDto {
   articuloId: number;
   articuloCodigo: string;
   articuloDescripcion: string;

@@ -47,6 +47,9 @@ namespace Inventory.Data.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("Stock")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Codigo")
@@ -64,7 +67,8 @@ namespace Inventory.Data.Migrations
                             Codigo = "A1001",
                             Descripcion = "Camiseta básica blanca",
                             ImagenUrl = "https://picsum.photos/seed/a1001/600/400",
-                            Precio = 199.99m
+                            Precio = 199.99m,
+                            Stock = 50
                         },
                         new
                         {
@@ -72,7 +76,8 @@ namespace Inventory.Data.Migrations
                             Codigo = "A1002",
                             Descripcion = "Pantalón de mezclilla",
                             ImagenUrl = "https://picsum.photos/seed/a1002/600/400",
-                            Precio = 499.50m
+                            Precio = 499.50m,
+                            Stock = 30
                         },
                         new
                         {
@@ -80,7 +85,8 @@ namespace Inventory.Data.Migrations
                             Codigo = "A1003",
                             Descripcion = "Tenis deportivos",
                             ImagenUrl = "https://picsum.photos/seed/a1003/600/400",
-                            Precio = 899.00m
+                            Precio = 899.00m,
+                            Stock = 25
                         },
                         new
                         {
@@ -88,7 +94,8 @@ namespace Inventory.Data.Migrations
                             Codigo = "A1004",
                             Descripcion = "Sudadera con capucha",
                             ImagenUrl = "https://picsum.photos/seed/a1004/600/400",
-                            Precio = 650.00m
+                            Precio = 650.00m,
+                            Stock = 40
                         },
                         new
                         {
@@ -96,7 +103,8 @@ namespace Inventory.Data.Migrations
                             Codigo = "A1005",
                             Descripcion = "Reloj casual",
                             ImagenUrl = "https://picsum.photos/seed/a1005/600/400",
-                            Precio = 1200.00m
+                            Precio = 1200.00m,
+                            Stock = 15
                         },
                         new
                         {
@@ -104,7 +112,8 @@ namespace Inventory.Data.Migrations
                             Codigo = "A1006",
                             Descripcion = "Mochila escolar",
                             ImagenUrl = "https://picsum.photos/seed/a1006/600/400",
-                            Precio = 350.00m
+                            Precio = 350.00m,
+                            Stock = 60
                         },
                         new
                         {
@@ -112,7 +121,8 @@ namespace Inventory.Data.Migrations
                             Codigo = "A1007",
                             Descripcion = "Gorra clásica",
                             ImagenUrl = "https://picsum.photos/seed/a1007/600/400",
-                            Precio = 150.00m
+                            Precio = 150.00m,
+                            Stock = 80
                         },
                         new
                         {
@@ -120,7 +130,8 @@ namespace Inventory.Data.Migrations
                             Codigo = "A1008",
                             Descripcion = "Cinturón de piel",
                             ImagenUrl = "https://picsum.photos/seed/a1008/600/400",
-                            Precio = 275.00m
+                            Precio = 275.00m,
+                            Stock = 35
                         });
                 });
 
@@ -137,9 +148,6 @@ namespace Inventory.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.Property<int>("Stock")
-                        .HasColumnType("int");
-
                     b.HasKey("ArticuloId", "TiendaId");
 
                     b.HasIndex("TiendaId");
@@ -151,57 +159,55 @@ namespace Inventory.Data.Migrations
                         {
                             ArticuloId = 1,
                             TiendaId = 1,
-                            FechaAlta = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Stock = 50
+                            FechaAlta = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             ArticuloId = 2,
                             TiendaId = 1,
-                            FechaAlta = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Stock = 30
+                            FechaAlta = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             ArticuloId = 3,
                             TiendaId = 1,
-                            FechaAlta = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Stock = 20
+                            FechaAlta = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             ArticuloId = 4,
                             TiendaId = 1,
-                            FechaAlta = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Stock = 15
+                            FechaAlta = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             ArticuloId = 5,
                             TiendaId = 2,
-                            FechaAlta = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Stock = 40
+                            FechaAlta = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             ArticuloId = 6,
                             TiendaId = 2,
-                            FechaAlta = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Stock = 25
+                            FechaAlta = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             ArticuloId = 7,
                             TiendaId = 2,
-                            FechaAlta = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Stock = 60
+                            FechaAlta = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             ArticuloId = 8,
                             TiendaId = 2,
-                            FechaAlta = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Stock = 10
+                            FechaAlta = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            ArticuloId = 1,
+                            TiendaId = 2,
+                            FechaAlta = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
 

@@ -43,15 +43,15 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         });
 
         b.Entity<Articulo>().HasData(
-                new Articulo { Id = 1, Codigo = "A1001", Descripcion = "Camiseta básica blanca", Precio = 199.99m, ImagenUrl = "https://picsum.photos/seed/a1001/600/400" },
-                new Articulo { Id = 2, Codigo = "A1002", Descripcion = "Pantalón de mezclilla",   Precio = 499.50m, ImagenUrl = "https://picsum.photos/seed/a1002/600/400" },
-                new Articulo { Id = 3, Codigo = "A1003", Descripcion = "Tenis deportivos",       Precio = 899.00m, ImagenUrl = "https://picsum.photos/seed/a1003/600/400" },
-                new Articulo { Id = 4, Codigo = "A1004", Descripcion = "Sudadera con capucha",   Precio = 650.00m, ImagenUrl = "https://picsum.photos/seed/a1004/600/400" },
-                new Articulo { Id = 5, Codigo = "A1005", Descripcion = "Reloj casual",           Precio = 1200.00m, ImagenUrl = "https://picsum.photos/seed/a1005/600/400" },
-                new Articulo { Id = 6, Codigo = "A1006", Descripcion = "Mochila escolar",        Precio = 350.00m, ImagenUrl = "https://picsum.photos/seed/a1006/600/400" },
-                new Articulo { Id = 7, Codigo = "A1007", Descripcion = "Gorra clásica",          Precio = 150.00m, ImagenUrl = "https://picsum.photos/seed/a1007/600/400" },
-                new Articulo { Id = 8, Codigo = "A1008", Descripcion = "Cinturón de piel",       Precio = 275.00m, ImagenUrl = "https://picsum.photos/seed/a1008/600/400" }
-            );
+            new Articulo { Id = 1, Codigo = "A1001", Descripcion = "Camiseta básica blanca", Precio = 199.99m, ImagenUrl = "https://picsum.photos/seed/a1001/600/400", Stock = 50 },
+            new Articulo { Id = 2, Codigo = "A1002", Descripcion = "Pantalón de mezclilla",   Precio = 499.50m, ImagenUrl = "https://picsum.photos/seed/a1002/600/400", Stock = 30 },
+            new Articulo { Id = 3, Codigo = "A1003", Descripcion = "Tenis deportivos",       Precio = 899.00m, ImagenUrl = "https://picsum.photos/seed/a1003/600/400", Stock = 25 },
+            new Articulo { Id = 4, Codigo = "A1004", Descripcion = "Sudadera con capucha",   Precio = 650.00m, ImagenUrl = "https://picsum.photos/seed/a1004/600/400", Stock = 40 },
+            new Articulo { Id = 5, Codigo = "A1005", Descripcion = "Reloj casual",           Precio = 1200.00m, ImagenUrl = "https://picsum.photos/seed/a1005/600/400", Stock = 15 },
+            new Articulo { Id = 6, Codigo = "A1006", Descripcion = "Mochila escolar",        Precio = 350.00m, ImagenUrl = "https://picsum.photos/seed/a1006/600/400", Stock = 60 },
+            new Articulo { Id = 7, Codigo = "A1007", Descripcion = "Gorra clásica",          Precio = 150.00m, ImagenUrl = "https://picsum.photos/seed/a1007/600/400", Stock = 80 },
+            new Articulo { Id = 8, Codigo = "A1008", Descripcion = "Cinturón de piel",       Precio = 275.00m, ImagenUrl = "https://picsum.photos/seed/a1008/600/400", Stock = 35 }
+        );
 
         b.Entity<ArticuloTienda>(e =>
         {
@@ -74,15 +74,16 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         var alta = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         b.Entity<ArticuloTienda>().HasData(
-            new ArticuloTienda { ArticuloId = 1, TiendaId = 1, FechaAlta = alta, Stock = 50 },
-            new ArticuloTienda { ArticuloId = 2, TiendaId = 1, FechaAlta = alta, Stock = 30 },
-            new ArticuloTienda { ArticuloId = 3, TiendaId = 1, FechaAlta = alta, Stock = 20 },
-            new ArticuloTienda { ArticuloId = 4, TiendaId = 1, FechaAlta = alta, Stock = 15 },
+            new ArticuloTienda { ArticuloId = 1, TiendaId = 1, FechaAlta = alta },
+            new ArticuloTienda { ArticuloId = 2, TiendaId = 1, FechaAlta = alta },
+            new ArticuloTienda { ArticuloId = 3, TiendaId = 1, FechaAlta = alta },
+            new ArticuloTienda { ArticuloId = 4, TiendaId = 1, FechaAlta = alta },
 
-            new ArticuloTienda { ArticuloId = 5, TiendaId = 2, FechaAlta = alta, Stock = 40 },
-            new ArticuloTienda { ArticuloId = 6, TiendaId = 2, FechaAlta = alta, Stock = 25 },
-            new ArticuloTienda { ArticuloId = 7, TiendaId = 2, FechaAlta = alta, Stock = 60 },
-            new ArticuloTienda { ArticuloId = 8, TiendaId = 2, FechaAlta = alta, Stock = 10 }
+            new ArticuloTienda { ArticuloId = 5, TiendaId = 2, FechaAlta = alta },
+            new ArticuloTienda { ArticuloId = 6, TiendaId = 2, FechaAlta = alta },
+            new ArticuloTienda { ArticuloId = 7, TiendaId = 2, FechaAlta = alta },
+            new ArticuloTienda { ArticuloId = 8, TiendaId = 2, FechaAlta = alta },
+            new ArticuloTienda { ArticuloId = 1, TiendaId = 2, FechaAlta = alta }
         );
 
         b.Entity<ClienteArticulo>(e =>

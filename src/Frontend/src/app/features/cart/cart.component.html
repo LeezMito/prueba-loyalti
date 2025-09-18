@@ -1,6 +1,4 @@
-
 <div class="container cart">
-  <!-- Estado vacío -->
   <section class="cart-empty" *ngIf="(vm$ | async)?.items?.length === 0">
     <div class="card cart-empty__card">
       <div class="cart-empty__icon">🛍️</div>
@@ -10,9 +8,7 @@
     </div>
   </section>
 
-  <!-- Carrito con items -->
   <section class="cart-grid" *ngIf="(vm$ | async) as vm" [class.hidden]="!vm.items?.length">
-    <!-- Lista de items -->
     <div class="card cart-list">
       <div class="cart-list__head">
         <span>Producto</span>
